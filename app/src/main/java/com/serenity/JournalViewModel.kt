@@ -133,7 +133,9 @@ class JournalViewModel @Inject constructor(
                     Title: ${journal.title}
                     Content: ${journal.content}
                 """.trimIndent()
-                val analysisJson = aiManager.postRequest(prompt, model = "optional-model")
+                val analysisJson = withContext(Dispatchers.IO) {
+                    aiManager.postRequest(prompt, model = "optional-model")
+                }
                 _analysisResult.value = JournalAnalysisResult.Success(analysisJson)
                 Timber.d("AI analysis result: $analysisJson")
                 // Save analysis to DB
