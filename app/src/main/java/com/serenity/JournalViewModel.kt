@@ -255,7 +255,7 @@ class JournalViewModel @Inject constructor(
         val allPeople = peopleMentioned.value
         val recentChatMessages = _chatMessages.value.takeLast(30) // Last 10 chat messages
 
-        val recentJournals = allJournals.takeLast(5) // Last 5 journal entries
+        val recentJournals = allJournals.takeLast(10) // Last 10 journal entries
         val journalContext = if (recentJournals.isNotEmpty()) {
             "From users recent journal entries, you can see:\n" + recentJournals.joinToString("\n\n") { journal ->
                 "• ${journal.title ?: "Untitled"}: ${(journal.content ?: "")}${if ((journal.content?.length ?: 0) > 150) "..." else ""}"
