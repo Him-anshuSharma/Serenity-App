@@ -79,8 +79,8 @@ fun ChatScreen(
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        SerenityBackground,
-                        SerenitySurfaceVariant.copy(alpha = 0.2f)
+                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
                     )
                 )
             )
@@ -93,7 +93,7 @@ fun ChatScreen(
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            SerenityAccent2.copy(alpha = 0.08f),
+                            MaterialTheme.colorScheme.secondary.copy(alpha = 0.08f),
                             Color.Transparent
                         )
                     ),
@@ -111,10 +111,10 @@ fun ChatScreen(
                     .shadow(
                         elevation = 8.dp,
                         shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 20.dp),
-                        spotColor = SerenitySecondary.copy(alpha = 0.2f)
+                        spotColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f)
                     ),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 20.dp)
             ) {
@@ -135,14 +135,14 @@ fun ChatScreen(
                             onClick = onBack,
                             modifier = Modifier
                                 .background(
-                                    color = Color.White.copy(alpha = 0.2f),
+                                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.2f),
                                     shape = RoundedCornerShape(12.dp)
                                 )
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Back",
-                                tint = Color.White
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
                         
@@ -153,12 +153,12 @@ fun ChatScreen(
                                 text = "Chat with Serenity",
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = "Your friendly AI companion",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Color.White.copy(alpha = 0.9f)
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
                             )
                         }
                     }
@@ -253,10 +253,10 @@ fun ChatScreen(
                     .shadow(
                         elevation = 12.dp,
                         shape = RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp),
-                        spotColor = SerenityPrimary.copy(alpha = 0.2f)
+                        spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                     ),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp)
             ) {
@@ -269,7 +269,7 @@ fun ChatScreen(
                             text = "Quick suggestions:",
                             style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Medium,
-                            color = SerenityOnSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         LazyRow(
@@ -318,10 +318,10 @@ fun ChatScreen(
                             placeholder = { Text("Type your message…") },
                             modifier = Modifier.weight(1f),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = SerenityPrimary,
-                                unfocusedBorderColor = SerenityOnSurfaceVariant.copy(alpha = 0.3f),
-                                focusedPlaceholderColor = SerenityOnSurfaceVariant,
-                                unfocusedPlaceholderColor = SerenityOnSurfaceVariant
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                                focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant
                             ),
                             shape = RoundedCornerShape(24.dp),
                             maxLines = 3
@@ -350,7 +350,7 @@ fun ChatScreen(
                             modifier = Modifier
                                 .size(48.dp)
                                 .background(
-                                    color = if (input.text.isNotBlank()) SerenityPrimary else SerenityOnSurfaceVariant.copy(alpha = 0.3f),
+                                    color = if (input.text.isNotBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
                                     shape = RoundedCornerShape(24.dp)
                                 ),
                             colors = IconButtonDefaults.iconButtonColors(
@@ -360,7 +360,7 @@ fun ChatScreen(
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.Send,
                                 contentDescription = "Send",
-                                tint = if (input.text.isNotBlank()) Color.White else SerenityOnSurfaceVariant,
+                                tint = if (input.text.isNotBlank()) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -392,16 +392,16 @@ private fun ChatBubble(
                         bottomEnd = if (isUser) 4.dp else 16.dp
                     ),
                     spotColor = if (isUser) {
-                        SerenityPrimary.copy(alpha = 0.2f)
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                     } else {
-                        SerenitySecondary.copy(alpha = 0.2f)
+                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f)
                     }
                 ),
             colors = CardDefaults.cardColors(
                 containerColor = if (isUser) {
-                    Color.White
+                    MaterialTheme.colorScheme.surface
                 } else {
-                    SerenitySurfaceVariant.copy(alpha = 0.5f)
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                 }
             ),
             shape = RoundedCornerShape(
@@ -419,8 +419,8 @@ private fun ChatBubble(
                         } else {
                             Brush.linearGradient(
                                 colors = listOf(
-                                    SerenitySurfaceVariant.copy(alpha = 0.8f),
-                                    SerenitySurfaceVariant.copy(alpha = 0.6f)
+                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f),
+                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
                                 )
                             )
                         },
@@ -436,7 +436,7 @@ private fun ChatBubble(
                 Text(
                     text = message.text ?: "",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (isUser) Color.White else SerenityOnSurface,
+                    color = if (isUser) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = if (isUser) TextAlign.End else TextAlign.Start
                 )
             }
@@ -456,20 +456,20 @@ private fun EmptyChatState() {
             imageVector = Icons.Filled.Email,
             contentDescription = "Start Chat",
             modifier = Modifier.size(80.dp),
-            tint = SerenityOnSurfaceVariant.copy(alpha = 0.5f)
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Start a conversation",
             style = MaterialTheme.typography.headlineSmall,
-            color = SerenityOnSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "Ask me about your thoughts, feelings, or anything on your mind",
             style = MaterialTheme.typography.bodyMedium,
-            color = SerenityOnSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             textAlign = TextAlign.Center
         )
     }
@@ -485,18 +485,18 @@ internal fun SuggestionChip(
             .shadow(
                 elevation = 2.dp,
                 shape = RoundedCornerShape(16.dp),
-                spotColor = SerenityPrimary.copy(alpha = 0.1f)
+                spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
             )
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
-            color = SerenityPrimary,
+            color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
         )

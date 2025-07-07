@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -86,12 +87,7 @@ fun ProfileScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        SerenityBackground,
-                        SerenitySurfaceVariant.copy(alpha = 0.3f)
-                    )
-                )
+                MaterialTheme.colorScheme.background
             )
             .padding(16.dp)
     ) {
@@ -124,7 +120,7 @@ fun ProfileScreen(
                         spotColor = SerenityTertiary.copy(alpha = 0.2f)
                     ),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(0.dp, 0.dp, 24.dp, 24.dp)
             ) {
@@ -146,14 +142,14 @@ fun ProfileScreen(
                                 onClick = onBack,
                                 modifier = Modifier
                                     .background(
-                                        color = Color.White.copy(alpha = 0.2f),
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
                                         shape = RoundedCornerShape(12.dp)
                                     )
                             ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = "Back",
-                                    tint = Color.White
+                                    tint = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                             
@@ -163,7 +159,7 @@ fun ProfileScreen(
                                 text = "Your Profile",
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                         
@@ -176,10 +172,10 @@ fun ProfileScreen(
                                 .shadow(
                                     elevation = 8.dp,
                                     shape = RoundedCornerShape(16.dp),
-                                    spotColor = Color.White.copy(alpha = 0.2f)
+                                    spotColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
                                 ),
                             colors = CardDefaults.cardColors(
-                                containerColor = Color.White.copy(alpha = 0.9f)
+                                containerColor = MaterialTheme.colorScheme.surface
                             ),
                             shape = RoundedCornerShape(16.dp)
                         ) {
@@ -200,7 +196,7 @@ fun ProfileScreen(
                                         imageVector = Icons.Filled.Person,
                                         contentDescription = "Profile",
                                         modifier = Modifier.size(32.dp),
-                                        tint = Color.White
+                                        tint = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
                                 
@@ -211,12 +207,12 @@ fun ProfileScreen(
                                         text = signInViewModel.getProfile()?.displayName ?: "User",
                                         style = MaterialTheme.typography.titleLarge,
                                         fontWeight = FontWeight.Bold,
-                                        color = SerenityOnSurface
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
                                         text = signInViewModel.getProfile()?.email ?: "user@example.com",
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = SerenityOnSurfaceVariant
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             }
@@ -271,7 +267,7 @@ fun ProfileScreen(
                         spotColor = SerenityQuaternary.copy(alpha = 0.2f)
                     ),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(16.dp)
             ) {
@@ -282,7 +278,7 @@ fun ProfileScreen(
                         text = "Backup & Sync",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = SerenityOnSurface
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     
                     Spacer(modifier = Modifier.height(16.dp))
@@ -301,7 +297,7 @@ fun ProfileScreen(
                                 Text(
                                     text = "Processing...",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = SerenityOnSurfaceVariant
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -367,7 +363,7 @@ fun ProfileScreen(
                             Text(
                                 text = "No backup data available",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = SerenityOnSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -396,7 +392,7 @@ fun ProfileScreen(
                             ) {
                                 Text(
                                     "Backup Data",
-                                    color = Color.White,
+                                    color = MaterialTheme.colorScheme.onPrimary,
                                     fontWeight = FontWeight.SemiBold
                                 )
                             }
@@ -406,13 +402,13 @@ fun ProfileScreen(
                             onClick = { journalViewModel.restoreData() },
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = SerenitySurfaceVariant
+                                containerColor = MaterialTheme.colorScheme.surface
                             ),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text(
                                 "Restore Data",
-                                color = SerenityOnSurface,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.SemiBold
                             )
                         }
@@ -455,13 +451,13 @@ fun ProfileScreen(
                         Icon(
                             Icons.AutoMirrored.Filled.ExitToApp,
                             contentDescription = "Logout",
-                            tint = Color.White,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             "Logout",
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             fontWeight = FontWeight.SemiBold,
                             style = MaterialTheme.typography.bodyLarge
                         )
@@ -488,7 +484,7 @@ private fun StatCard(
                 spotColor = color.copy(alpha = 0.2f)
             ),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -507,12 +503,12 @@ private fun StatCard(
                 text = value,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = SerenityOnSurface
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodySmall,
-                color = SerenityOnSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
         }

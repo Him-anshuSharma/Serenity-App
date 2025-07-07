@@ -63,37 +63,37 @@ private val LightColorScheme = lightColorScheme(
 
 private val DarkColorScheme = darkColorScheme(
     primary = SerenityPrimary,
-    onPrimary = SerenityOnPrimary,
+    onPrimary = DarkOnSurfacePrimary,
     primaryContainer = SerenityPrimary.copy(alpha = 0.2f),
     onPrimaryContainer = SerenityPrimary.copy(alpha = 0.9f),
     
     secondary = SerenitySecondary,
-    onSecondary = SerenityOnSecondary,
+    onSecondary = DarkOnSurfacePrimary,
     secondaryContainer = SerenitySecondary.copy(alpha = 0.2f),
     onSecondaryContainer = SerenitySecondary.copy(alpha = 0.9f),
     
     tertiary = SerenityTertiary,
-    onTertiary = SerenityOnPrimary,
+    onTertiary = DarkOnSurfacePrimary,
     tertiaryContainer = SerenityTertiary.copy(alpha = 0.2f),
     onTertiaryContainer = SerenityTertiary.copy(alpha = 0.9f),
     
     error = ErrorColor,
-    onError = SerenityOnPrimary,
+    onError = DarkOnSurfacePrimary,
     errorContainer = ErrorColor.copy(alpha = 0.2f),
     onErrorContainer = ErrorColor.copy(alpha = 0.9f),
     
-    background = Color(0xFF0F172A), // Dark blue-gray
-    onBackground = Color(0xFFF1F5F9), // Light gray
-    surface = Color(0xFF1E293B), // Dark slate
-    onSurface = Color(0xFFF1F5F9),
-    surfaceVariant = Color(0xFF334155), // Medium slate
-    onSurfaceVariant = Color(0xFFCBD5E1), // Light gray
+    background = Color(0xFF0F172A),
+    onBackground = DarkOnSurfacePrimary,
+    surface = Color(0xFF1E293B),
+    onSurface = DarkOnSurfacePrimary,
+    surfaceVariant = Color(0xFF334155),
+    onSurfaceVariant = DarkOnSurfaceSecondary,
     
     outline = Color(0xFF64748B).copy(alpha = 0.3f),
     outlineVariant = Color(0xFF64748B).copy(alpha = 0.2f),
     
     scrim = Color(0xFF000000).copy(alpha = 0.4f),
-    inverseSurface = Color(0xFFF1F5F9),
+    inverseSurface = DarkOnSurfacePrimary,
     inverseOnSurface = Color(0xFF1E293B),
     inversePrimary = SerenityPrimary.copy(alpha = 0.8f),
     

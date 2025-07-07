@@ -156,8 +156,8 @@ fun JournalScreen(
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        SerenityBackground,
-                        SerenitySurfaceVariant.copy(alpha = 0.3f)
+                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                     )
                 )
             )
@@ -170,7 +170,7 @@ fun JournalScreen(
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            SerenityPrimary.copy(alpha = 0.05f),
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
                             Color.Transparent
                         )
                     ),
@@ -190,10 +190,10 @@ fun JournalScreen(
                     .shadow(
                         elevation = 12.dp,
                         shape = RoundedCornerShape(20.dp),
-                        spotColor = SerenityPrimary.copy(alpha = 0.2f)
+                        spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                     ),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(20.dp)
             ) {
@@ -211,13 +211,13 @@ fun JournalScreen(
                             text = "Welcome back!",
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "How are you feeling today?",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Color.White.copy(alpha = 0.9f)
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
                         )
                     }
                 }
@@ -246,7 +246,7 @@ fun JournalScreen(
                     icon = painterResource(R.drawable.dashboard),
                     text = "Dashboard",
                     onClick = { showDashboard = true },
-                    color = Color(0xFF10B981)
+                    color = SerenityQuaternary
                 )
                 NavigationButton(
                     icon = painterResource(R.drawable.profile),
@@ -265,10 +265,10 @@ fun JournalScreen(
                     .shadow(
                         elevation = 8.dp,
                         shape = RoundedCornerShape(16.dp),
-                        spotColor = SerenitySecondary.copy(alpha = 0.2f)
+                        spotColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f)
                     ),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(16.dp)
             ) {
@@ -279,7 +279,7 @@ fun JournalScreen(
                         text = "New Journal Entry",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = SerenityOnSurface
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     
                     Spacer(modifier = Modifier.height(16.dp))
@@ -290,10 +290,10 @@ fun JournalScreen(
                         label = { Text("Title") },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = SerenityPrimary,
-                            unfocusedBorderColor = SerenityOnSurfaceVariant.copy(alpha = 0.3f),
-                            focusedLabelColor = SerenityPrimary,
-                            unfocusedLabelColor = SerenityOnSurfaceVariant
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                            focusedLabelColor = MaterialTheme.colorScheme.primary,
+                            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         shape = RoundedCornerShape(12.dp)
                     )
@@ -308,10 +308,10 @@ fun JournalScreen(
                             .fillMaxWidth()
                             .height(120.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = SerenityPrimary,
-                            unfocusedBorderColor = SerenityOnSurfaceVariant.copy(alpha = 0.3f),
-                            focusedLabelColor = SerenityPrimary,
-                            unfocusedLabelColor = SerenityOnSurfaceVariant
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                            focusedLabelColor = MaterialTheme.colorScheme.primary,
+                            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         shape = RoundedCornerShape(12.dp)
                     )
@@ -336,8 +336,8 @@ fun JournalScreen(
                                 brush = if (isAnalyzing) {
                                     Brush.linearGradient(
                                         colors = listOf(
-                                            SerenityOnSurfaceVariant.copy(alpha = 0.3f),
-                                            SerenityOnSurfaceVariant.copy(alpha = 0.2f)
+                                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
                                         )
                                     )
                                 } else {
@@ -357,13 +357,13 @@ fun JournalScreen(
                                 if (isAnalyzing) {
                                     CircularProgressIndicator(
                                         modifier = Modifier.size(20.dp),
-                                        color = SerenityPrimary,
+                                        color = MaterialTheme.colorScheme.primary,
                                         strokeWidth = 2.dp
                                     )
                                 } else {
                                     Text(
                                         "Save & Analyze",
-                                        color = Color.White,
+                                        color = MaterialTheme.colorScheme.onSurface,
                                         fontWeight = FontWeight.SemiBold,
                                         style = MaterialTheme.typography.bodyMedium
                                     )
@@ -382,13 +382,13 @@ fun JournalScreen(
                             enabled = title.isNotBlank() && content.isNotBlank() && !isAnalyzing,
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = SerenitySurfaceVariant
+                                containerColor = MaterialTheme.colorScheme.surface
                             ),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text(
                                 "Save Only",
-                                color = SerenityOnSurface,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.SemiBold,
                                 style = MaterialTheme.typography.bodyMedium
                             )
@@ -405,7 +405,7 @@ fun JournalScreen(
                     text = "Recent Entries",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color = SerenityOnSurface
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -439,20 +439,20 @@ fun JournalScreen(
                             imageVector = Icons.Filled.Edit,
                             contentDescription = "Start Writing",
                             modifier = Modifier.size(80.dp),
-                            tint = SerenityOnSurfaceVariant.copy(alpha = 0.5f)
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "Start your journaling journey",
                             style = MaterialTheme.typography.headlineSmall,
-                            color = SerenityOnSurfaceVariant,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "Write your first entry above to begin reflecting",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = SerenityOnSurfaceVariant.copy(alpha = 0.7f),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                             textAlign = TextAlign.Center
                         )
                     }
@@ -496,7 +496,7 @@ private fun NavigationButton(
                 spotColor = color.copy(alpha = 0.2f)
             ),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -517,7 +517,7 @@ private fun NavigationButton(
                 text = text,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Medium,
-                color = SerenityOnSurface
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
@@ -534,11 +534,11 @@ private fun JournalCard(
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(12.dp),
-                spotColor = SerenitySecondary.copy(alpha = 0.1f)
+                spotColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f)
             )
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -549,13 +549,13 @@ private fun JournalCard(
                 text = journal.title ?: "Untitled",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = SerenityOnSurface
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = journal.content ?: "",
                 style = MaterialTheme.typography.bodyMedium,
-                color = SerenityOnSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -564,7 +564,7 @@ private fun JournalCard(
                 text = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
                     .format(Date(journal.timestamp)),
                 style = MaterialTheme.typography.bodySmall,
-                color = SerenityOnSurfaceVariant.copy(alpha = 0.7f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
         }
     }
@@ -804,15 +804,15 @@ fun HeaderRow(showHistory: Boolean, showProfile: Boolean, onHistoryClick: () -> 
             text = "Serenity Journal",
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onSurface
             )
         )
         Row {
             IconButton(onClick = { showHistory }) {
-                Icon(Icons.AutoMirrored.Filled.List, contentDescription = "History", tint = Color.White, modifier = Modifier.size(28.dp))
+                Icon(Icons.AutoMirrored.Filled.List, contentDescription = "History", tint = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(28.dp))
             }
             IconButton(onClick = { showProfile }) {
-                Icon(Icons.Filled.AccountCircle, contentDescription = "Profile", tint = Color.White, modifier = Modifier.size(32.dp))
+                Icon(Icons.Filled.AccountCircle, contentDescription = "Profile", tint = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(32.dp))
             }
         }
     }

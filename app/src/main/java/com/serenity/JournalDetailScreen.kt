@@ -53,6 +53,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.google.gson.Gson
 import com.serenity.data.Journal
 import java.com.serenity.R
+import java.com.serenity.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -89,8 +90,8 @@ fun JournalDetailScreen(
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFFF8FAFC),
-                        Color(0xFFE2E8F0)
+                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.surfaceVariant
                     )
                 )
             )
@@ -114,7 +115,7 @@ fun JournalDetailScreen(
                         .size(48.dp)
                         .shadow(4.dp, RoundedCornerShape(12.dp))
                         .background(
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.surface,
                             shape = RoundedCornerShape(12.dp)
                         )
                         .clip(RoundedCornerShape(12.dp))
@@ -122,7 +123,7 @@ fun JournalDetailScreen(
                     Icon(
                         Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back",
-                        tint = Color(0xFF475569),
+                        tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -131,7 +132,7 @@ fun JournalDetailScreen(
                     text = "Journal Entry",
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1E293B)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 )
             }
@@ -143,7 +144,7 @@ fun JournalDetailScreen(
                     .padding(bottom = 16.dp)
                     .shadow(8.dp, RoundedCornerShape(16.dp)),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(16.dp)
             ) {
@@ -155,7 +156,7 @@ fun JournalDetailScreen(
                         text = journal.title ?: "Untitled",
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF1E293B)
+                            color = MaterialTheme.colorScheme.onSurface
                         ),
                         textAlign = TextAlign.Start
                     )
@@ -164,7 +165,7 @@ fun JournalDetailScreen(
                         text = SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.getDefault())
                             .format(Date(journal.timestamp)),
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            color = Color(0xFF64748B)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         textAlign = TextAlign.Start
                     )
@@ -179,7 +180,7 @@ fun JournalDetailScreen(
                             }
                         },
                         style = MaterialTheme.typography.bodyLarge.copy(
-                            color = Color(0xFF334155),
+                            color = MaterialTheme.colorScheme.onSurface,
                             lineHeight = 28.sp
                         ),
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -191,7 +192,7 @@ fun JournalDetailScreen(
                         ) {
                             Text(
                                 text = if (showJournalExpanded) "Show less" else "Read more",
-                                color = Color(0xFF6366F1),
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Medium
                             )
                         }
@@ -270,7 +271,7 @@ fun JournalDetailScreen(
                     icon = painterResource(R.drawable.psychology),
                     preview = (analysis.psychological_interpretation ?: "").take(50) + if ((analysis.psychological_interpretation?.length ?: 0) > 50) "..." else "",
                     onClick = { showInterpretationPopup = true },
-                    color = Color(0xFF8B5CF6)
+                    color = Color(0xFF6366F1)
                 )
 
                 // People button
@@ -306,7 +307,7 @@ fun JournalDetailScreen(
                         .fillMaxWidth()
                         .padding(vertical = 32.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.surface
                     ),
                     shape = RoundedCornerShape(16.dp)
                 ) {
@@ -318,13 +319,13 @@ fun JournalDetailScreen(
                             Icons.Default.Info,
                             contentDescription = null,
                             modifier = Modifier.size(48.dp),
-                            tint = Color(0xFF94A3B8)
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             "No insights available for this journal entry.",
                             style = MaterialTheme.typography.bodyLarge.copy(
-                                color = Color(0xFF64748B)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             ),
                             textAlign = TextAlign.Center
                         )
@@ -346,7 +347,7 @@ fun JournalDetailScreen(
                     Text(
                         text = analysis.summary ?: "",
                         style = MaterialTheme.typography.bodyLarge.copy(
-                            color = Color(0xFF334155),
+                            color = MaterialTheme.colorScheme.onSurface,
                             lineHeight = 24.sp
                         )
                     )
@@ -427,7 +428,7 @@ fun JournalDetailScreen(
                             Text(
                                 text = emotion ?: "",
                                 style = MaterialTheme.typography.bodyMedium.copy(
-                                    color = Color(0xFF1E293B),
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.SemiBold
                                 ),
                                 softWrap = true
@@ -435,7 +436,7 @@ fun JournalDetailScreen(
                             Text(
                                 text = reason ?: "",
                                 style = MaterialTheme.typography.bodySmall.copy(
-                                    color = Color(0xFF64748B),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     lineHeight = 22.sp
                                 ),
                                 modifier = Modifier.padding(start = 16.dp, top = 6.dp),
@@ -462,7 +463,7 @@ fun JournalDetailScreen(
                             Text(
                                 text = emotion ?: "",
                                 style = MaterialTheme.typography.bodyMedium.copy(
-                                    color = Color(0xFF1E293B),
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.SemiBold
                                 ),
                                 softWrap = true
@@ -470,7 +471,7 @@ fun JournalDetailScreen(
                             Text(
                                 text = trigger ?: "",
                                 style = MaterialTheme.typography.bodySmall.copy(
-                                    color = Color(0xFF64748B),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     lineHeight = 22.sp
                                 ),
                                 modifier = Modifier.padding(start = 16.dp, top = 6.dp),
@@ -486,12 +487,12 @@ fun JournalDetailScreen(
                     title = "Psychological Interpretation",
                     icon = painterResource(R.drawable.psychology),
                     onDismiss = { showInterpretationPopup = false },
-                    color = Color(0xFF8B5CF6)
+                    color = Color(0xFF6366F1)
                 ) {
                     Text(
                         text = analysis.psychological_interpretation ?: "",
                         style = MaterialTheme.typography.bodyLarge.copy(
-                            color = Color(0xFF334155),
+                            color = MaterialTheme.colorScheme.onSurface,
                             lineHeight = 24.sp
                         )
                     )
@@ -530,7 +531,7 @@ fun JournalDetailScreen(
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = Color(0xFFF1F5F9)
+                                containerColor = MaterialTheme.colorScheme.surface
                             ),
                             shape = RoundedCornerShape(12.dp)
                         ) {
@@ -538,20 +539,20 @@ fun JournalDetailScreen(
                                 Text(
                                     text = moment.context ?: "",
                                     style = MaterialTheme.typography.bodyMedium.copy(
-                                        color = Color(0xFF1E293B),
+                                        color = MaterialTheme.colorScheme.onSurface,
                                         fontWeight = FontWeight.Bold
                                     )
                                 )
                                 Text(
                                     text = moment.description ?: "",
                                     style = MaterialTheme.typography.bodySmall.copy(
-                                        color = Color(0xFF64748B)
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 )
                                 Text(
                                     text = moment.emotion ?: "",
                                     style = MaterialTheme.typography.bodySmall.copy(
-                                        color = Color(0xFF6366F1),
+                                        color = MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.Medium
                                     )
                                 )
@@ -599,7 +600,7 @@ private fun AnalysisButton(
             .clickable { onClick() }
             .shadow(2.dp, RoundedCornerShape(12.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -619,20 +620,20 @@ private fun AnalysisButton(
                     text = title,
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.SemiBold,
-                        color = Color(0xFF1E293B)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 )
                 Text(
                     text = preview,
                     style = MaterialTheme.typography.bodySmall.copy(
-                        color = Color(0xFF64748B)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
             }
             Icon(
                 Icons.Default.KeyboardArrowRight,
                 contentDescription = "View details",
-                tint = Color(0xFF94A3B8),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)
             )
         }
@@ -661,7 +662,7 @@ private fun AnalysisPopup(
                 .wrapContentHeight()
                 .padding(4.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color.White
+                containerColor = MaterialTheme.colorScheme.surface
             ),
             shape = RoundedCornerShape(20.dp)
         ) {
@@ -683,14 +684,14 @@ private fun AnalysisPopup(
                             icon,
                             contentDescription = null,
                             modifier = Modifier.size(28.dp),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         Text(
                             text = title,
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White
+                                color = MaterialTheme.colorScheme.onPrimary
                             ),
                             modifier = Modifier.weight(1f)
                         )
@@ -701,7 +702,7 @@ private fun AnalysisPopup(
                             Icon(
                                 Icons.Default.Close,
                                 contentDescription = "Close",
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -726,11 +727,11 @@ private fun AnalysisPopup(
 @Composable
 private fun MoodChip(emotion: String, value: Int) {
     val color = when {
-        value >= 80 -> Color(0xFFFB7185)
-        value >= 60 -> Color(0xFFF59E42)
-        value >= 40 -> Color(0xFFFBBF24)
-        value >= 20 -> Color(0xFF34D399)
-        else -> Color(0xFF60A5FA)
+        value >= 80 -> MaterialTheme.colorScheme.error
+        value >= 60 -> MaterialTheme.colorScheme.secondaryContainer
+        value >= 40 -> MaterialTheme.colorScheme.tertiary
+        value >= 20 -> MaterialTheme.colorScheme.primaryContainer
+        else -> MaterialTheme.colorScheme.primary
     }
     Surface(
         shape = RoundedCornerShape(50),
@@ -771,7 +772,7 @@ private fun SimpleInsightItem(insight: String) {
         Text(
             text = "•",
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = Color(0xFF6366F1),
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
             ),
             modifier = Modifier.padding(top = 2.dp, end = 12.dp)
@@ -780,7 +781,7 @@ private fun SimpleInsightItem(insight: String) {
         Text(
             text = insight,
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = Color(0xFF475569),
+                color = MaterialTheme.colorScheme.onSurface,
                 lineHeight = 24.sp
             ),
             modifier = Modifier.weight(1f),
@@ -800,7 +801,7 @@ private fun SimpleActivityItem(activity: String) {
         Text(
             text = "→",
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = Color(0xFF8B5CF6),
+                color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Bold
             ),
             modifier = Modifier.padding(top = 2.dp, end = 12.dp)
@@ -809,7 +810,7 @@ private fun SimpleActivityItem(activity: String) {
         Text(
             text = activity,
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = Color(0xFF475569),
+                color = MaterialTheme.colorScheme.onSurface,
                 lineHeight = 24.sp
             ),
             modifier = Modifier.weight(1f),

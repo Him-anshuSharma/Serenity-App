@@ -38,6 +38,7 @@ import java.util.*
 
 // Import Person from JournalViewModel
 import java.com.serenity.R
+import java.com.serenity.ui.theme.*
 
 
 // Data class for mood data point
@@ -58,8 +59,8 @@ fun DashboardScreen(
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFFF8FAFC),
-                        Color(0xFFE2E8F0)
+                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.surfaceVariant
                     )
                 )
             )
@@ -82,7 +83,7 @@ fun DashboardScreen(
                         .size(48.dp)
                         .shadow(4.dp, RoundedCornerShape(12.dp))
                         .background(
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.surface,
                             shape = RoundedCornerShape(12.dp)
                         )
                         .clip(RoundedCornerShape(12.dp))
@@ -90,7 +91,7 @@ fun DashboardScreen(
                     Icon(
                         Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back",
-                        tint = Color(0xFF475569),
+                        tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -101,7 +102,7 @@ fun DashboardScreen(
                     text = "Dashboard",
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1E293B)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 )
             }
@@ -139,7 +140,7 @@ private fun StatsOverviewCard(journals: List<Journal>) {
             .fillMaxWidth()
             .shadow(6.dp, RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -163,7 +164,7 @@ private fun StatsOverviewCard(journals: List<Journal>) {
                     text = "Overview",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1E293B)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 )
             }
@@ -220,14 +221,14 @@ private fun StatItem(
             text = value,
             style = MaterialTheme.typography.headlineSmall.copy(
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1E293B)
+                color = MaterialTheme.colorScheme.onSurface
             )
         )
         
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall.copy(
-                color = Color(0xFF64748B)
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         )
     }
@@ -243,7 +244,7 @@ private fun MoodTrendsCard(journals: List<Journal>) {
             .fillMaxWidth()
             .shadow(6.dp, RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -261,7 +262,7 @@ private fun MoodTrendsCard(journals: List<Journal>) {
                     painter = painterResource(R.drawable.mood),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
-                    tint = Color(0xFF8B5CF6)
+                    tint = MaterialTheme.colorScheme.secondary
                 )
                 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -270,7 +271,7 @@ private fun MoodTrendsCard(journals: List<Journal>) {
                     text = "Mood Trends",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1E293B)
+                        color = MaterialTheme.colorScheme.onSurface
                     ),
                     modifier = Modifier.weight(1f)
                 )
@@ -282,7 +283,7 @@ private fun MoodTrendsCard(journals: List<Journal>) {
                         Icons.Filled.ArrowDropDown
                     },
                     contentDescription = if (isExpanded) "Collapse" else "Expand",
-                    tint = Color(0xFF64748B),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -309,7 +310,7 @@ private fun MoodTrendsCard(journals: List<Journal>) {
                     Text(
                         text = "No mood data available yet.",
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            color = Color(0xFF64748B)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
@@ -336,14 +337,14 @@ private fun MoodSparkline(
                 text = moodName.replaceFirstChar { it.uppercase() },
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFF475569)
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             )
             
             Text(
                 text = "${dataPoints.size} entries",
                 style = MaterialTheme.typography.bodySmall.copy(
-                    color = Color(0xFF64748B)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
         }
@@ -356,7 +357,7 @@ private fun MoodSparkline(
                 .fillMaxWidth()
                 .height(40.dp)
                 .background(
-                    color = Color(0xFFF8FAFC),
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(8.dp)
                 )
                 .padding(8.dp)
@@ -437,7 +438,7 @@ private fun PeopleCard(journals: List<Journal>) {
             .fillMaxWidth()
             .shadow(6.dp, RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -452,7 +453,7 @@ private fun PeopleCard(journals: List<Journal>) {
                     painter = painterResource(R.drawable.people),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
-                    tint = Color(0xFF10B981)
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
                 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -461,7 +462,7 @@ private fun PeopleCard(journals: List<Journal>) {
                     text = "People Mentioned",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1E293B)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 )
             }
@@ -479,7 +480,7 @@ private fun PeopleCard(journals: List<Journal>) {
                 Text(
                     text = "No people mentioned yet.",
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color(0xFF64748B)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
@@ -493,15 +494,15 @@ private fun PeopleCard(journals: List<Journal>) {
 fun PersonChip(person: AiPerson) {
     val relationshipColor = when (person.relationship?.lowercase()) {
         "positive" -> Color(0xFF10B981) // Green
-        "negative" -> Color(0xFFEF4444) // Red
-        else -> Color(0xFF6B7280) // Gray
+        "negative" -> MaterialTheme.colorScheme.error // Red
+        else -> MaterialTheme.colorScheme.outline // Gray
     }
     
     Card(
         modifier = Modifier
             .shadow(2.dp, RoundedCornerShape(20.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(20.dp)
     ) {
@@ -510,9 +511,9 @@ fun PersonChip(person: AiPerson) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = person.name.toString(),
+                text = person.name ?: "",
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color(0xFF1E293B),
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Medium
                 ),
                 textAlign = TextAlign.Center
@@ -541,7 +542,7 @@ private fun PlacesCard(journals: List<Journal>) {
             .fillMaxWidth()
             .shadow(6.dp, RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -565,7 +566,7 @@ private fun PlacesCard(journals: List<Journal>) {
                     text = "Places Visited",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1E293B)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 )
             }
@@ -583,7 +584,7 @@ private fun PlacesCard(journals: List<Journal>) {
                 Text(
                     text = "No places mentioned yet.",
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color(0xFF64748B)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
@@ -599,14 +600,14 @@ private fun PlaceChip(place: String) {
         modifier = Modifier
             .shadow(2.dp, RoundedCornerShape(20.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFEF3C7)
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(20.dp)
     ) {
         Text(
             text = place,
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = Color(0xFF92400E),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             ),
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -621,7 +622,7 @@ private fun RecentActivityCard(journals: List<Journal>) {
             .fillMaxWidth()
             .shadow(6.dp, RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -636,7 +637,7 @@ private fun RecentActivityCard(journals: List<Journal>) {
                     painter = painterResource(R.drawable.book),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
-                    tint = Color(0xFF6366F1)
+                    tint = MaterialTheme.colorScheme.primary
                 )
                 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -645,7 +646,7 @@ private fun RecentActivityCard(journals: List<Journal>) {
                     text = "Recent Activity",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1E293B)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 )
             }
@@ -656,7 +657,7 @@ private fun RecentActivityCard(journals: List<Journal>) {
                     if (journal != journals.take(5).last()) {
                         Divider(
                             modifier = Modifier.padding(vertical = 8.dp),
-                            color = Color(0xFFE2E8F0)
+                            color = MaterialTheme.colorScheme.outline
                         )
                     }
                 }
@@ -664,7 +665,7 @@ private fun RecentActivityCard(journals: List<Journal>) {
                 Text(
                     text = "No journal entries yet.",
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color(0xFF64748B)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
@@ -686,7 +687,7 @@ private fun RecentActivityItem(journal: Journal) {
             painter = painterResource(R.drawable.book),
             contentDescription = null,
             modifier = Modifier.size(20.dp),
-            tint = Color(0xFF6366F1)
+            tint = MaterialTheme.colorScheme.primary
         )
         
         Spacer(modifier = Modifier.width(12.dp))
@@ -698,7 +699,7 @@ private fun RecentActivityItem(journal: Journal) {
                 text = journal.title ?: "Untitled",
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFF1E293B)
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             )
             
@@ -706,7 +707,7 @@ private fun RecentActivityItem(journal: Journal) {
                 text = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
                     .format(Date(journal.timestamp)),
                 style = MaterialTheme.typography.bodySmall.copy(
-                    color = Color(0xFF64748B)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
         }
@@ -742,15 +743,16 @@ private fun getMoodTrendsData(journals: List<Journal>): List<MoodDataPoint> {
     return moodData.sortedBy { it.date }
 }
 
+@Composable
 private fun getMoodColor(mood: String): Color {
     return when (mood.lowercase()) {
-        "happy", "joy", "excited" -> Color(0xFF10B981) // Green
-        "sad", "depressed", "melancholy" -> Color(0xFF3B82F6) // Blue
-        "angry", "frustrated", "irritated" -> Color(0xFFEF4444) // Red
-        "anxious", "worried", "stressed" -> Color(0xFFF59E0B) // Orange
-        "calm", "peaceful", "relaxed" -> Color(0xFF8B5CF6) // Purple
-        "neutral", "okay", "fine" -> Color(0xFF6B7280) // Gray
-        else -> Color(0xFF8B5CF6) // Default purple
+        "happy", "joy", "excited" -> MaterialTheme.colorScheme.tertiary // Green
+        "sad", "depressed", "melancholy" -> MaterialTheme.colorScheme.secondary // Blue
+        "angry", "frustrated", "irritated" -> MaterialTheme.colorScheme.error // Red
+        "anxious", "worried", "stressed" -> MaterialTheme.colorScheme.secondary // Orange
+        "calm", "peaceful", "relaxed" -> MaterialTheme.colorScheme.secondary // Purple
+        "neutral", "okay", "fine" -> MaterialTheme.colorScheme.outline // Gray
+        else -> MaterialTheme.colorScheme.secondary // Default purple
     }
 }
 

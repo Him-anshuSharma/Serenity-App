@@ -69,3 +69,10 @@ val SuccessColor = Color(0xFF10B981) // Green
 val WarningColor = Color(0xFFF59E0B) // Amber
 val ErrorColor = Color(0xFFEF4444) // Red
 val InfoColor = Color(0xFF3B82F6) // Blue
+
+// --- Dark Theme Colors ---
+val DarkAppBarBackground = Color(0xFF111827) // Very dark blue-gray (almost black)
+val DarkAppBarContent = Color(0xFFF8FAFC) // Very light gray (for text/icons on app bar)
+val DarkOnSurfacePrimary = Color(0xFFFFFFFF) // Pure white for main text
+val DarkOnSurfaceSecondary = Color(0xFFCBD5E1) // Light gray for secondary text
+val DarkOnSurfaceTertiary = Color(0xFF94A3B8) // Even lighter gray for hints/disabled
