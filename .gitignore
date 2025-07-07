@@ -1,0 +1,7 @@
+*.yaml
+*key*
+.idea
+.gradle
+local.properties
+proguard-rules.pro
+*json
