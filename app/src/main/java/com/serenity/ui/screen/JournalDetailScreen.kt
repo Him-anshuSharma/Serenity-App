@@ -1,4 +1,4 @@
-package com.serenity
+package com.serenity.ui.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -51,9 +50,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.google.gson.Gson
-import com.serenity.data.Journal
+import com.serenity.data.model.AiAnalysis
+import com.serenity.data.local.entities.Journal
 import java.com.serenity.R
-import java.com.serenity.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

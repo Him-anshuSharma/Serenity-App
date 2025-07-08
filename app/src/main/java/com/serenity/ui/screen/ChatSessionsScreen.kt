@@ -1,4 +1,4 @@
-package com.serenity
+package com.serenity.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,17 +17,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.serenity.data.ChatSession
+import com.serenity.ui.viewmodel.ChatViewModel
+import com.serenity.data.local.entities.ChatSession
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
 fun ChatSessionsScreen(
-    journalViewModel: JournalViewModel = hiltViewModel(),
+    chatViewModel: ChatViewModel = hiltViewModel(),
     onBack: () -> Unit,
     onSessionSelected: (ChatSession) -> Unit
 ) {
-    val chatSessions by journalViewModel.chatSessions.collectAsState(initial = emptyList())
+    val chatSessions by chatViewModel.chatSessions.collectAsState(initial = emptyList())
     
     Surface(
         modifier = Modifier.fillMaxSize(),

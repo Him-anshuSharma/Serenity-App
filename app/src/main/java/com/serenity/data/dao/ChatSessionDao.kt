@@ -1,9 +1,10 @@
-package com.serenity.data
+package com.serenity.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.serenity.data.local.entities.ChatSession
 import kotlinx.coroutines.flow.Flow
 
 @Dao

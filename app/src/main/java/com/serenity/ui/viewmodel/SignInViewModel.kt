@@ -1,4 +1,4 @@
-package com.serenity
+package com.serenity.ui.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -7,13 +7,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.com.serenity.data.repository.AuthRepository
-import java.com.serenity.data.JournalDao
-import com.serenity.data.ChatSessionDao
+import com.serenity.data.dao.JournalDao
+import com.serenity.data.dao.ChatSessionDao
+import com.serenity.data.service.BackupService
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 
@@ -89,7 +92,7 @@ class SignInViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _signInState.value = SignInState.Loading
-                val credential = com.google.firebase.auth.GoogleAuthProvider.getCredential(idToken, null)
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
                 auth.signInWithCredential(credential).await()
                 _signInState.value = SignInState.Success
                 onResult(true, null)
@@ -126,7 +129,7 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    private fun checkForBackup() {
+    fun checkForBackup() {
         viewModelScope.launch {
             try {
                 val lastBackupTime = backupService.getLastBackupTime()
@@ -145,6 +148,57 @@ class SignInViewModel @Inject constructor(
 
     fun clearBackupState() {
         _backupState.value = null
+    }
+
+    fun backupData() {
+        viewModelScope.launch {
+            _backupState.value = BackupState.Loading
+            try {
+                val journalsList = journalDao.getAll().first()
+                val chatSessionsList = chatSessionDao.getAll().first()
+                val result = backupService.backupData(journalsList, chatSessionsList)
+                if (result.isSuccess) {
+                    _backupState.value = BackupState.Success(result.getOrNull() ?: "Backup completed")
+                } else {
+                    _backupState.value = BackupState.Error(result.exceptionOrNull()?.message ?: "Backup failed")
+                }
+            } catch (e: Exception) {
+                _backupState.value = BackupState.Error(e.message ?: "Backup failed")
+            }
+        }
+    }
+
+    fun restoreData() {
+        viewModelScope.launch {
+            _backupState.value = BackupState.Loading
+            try {
+                val result = backupService.restoreData()
+                if (result.isSuccess) {
+                    val backupData = result.getOrNull()
+                    backupData?.let { data ->
+                        // Clear existing data
+                        journalDao.deleteAll()
+                        chatSessionDao.deleteAll()
+
+                        // Restore journals
+                        data.journals.forEach { journal ->
+                            journalDao.insertReturnId(journal)
+                        }
+
+                        // Restore chat sessions
+                        data.chatSessions.forEach { session ->
+                            chatSessionDao.insert(session)
+                        }
+
+                        _backupState.value = BackupState.Success("Data restored successfully")
+                    }
+                } else {
+                    _backupState.value = BackupState.Error(result.exceptionOrNull()?.message ?: "Restore failed")
+                }
+            } catch (e: Exception) {
+                _backupState.value = BackupState.Error(e.message ?: "Restore failed")
+            }
+        }
     }
 }
 

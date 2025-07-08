@@ -1,4 +1,4 @@
-package com.serenity
+package com.serenity.ui.screen
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -45,12 +45,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.serenity.ui.viewmodel.BackupState
+import com.serenity.ui.viewmodel.JournalViewModel
+import com.serenity.ui.viewmodel.SignInViewModel
 import java.com.serenity.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -64,11 +66,11 @@ fun ProfileScreen(
     onBack: () -> Unit
 ) {
     val journals by journalViewModel.journals.collectAsState()
-    val backupStatus by journalViewModel.backupStatus.collectAsState()
+    val backupState by signInViewModel.backupState.collectAsState()
     
     // Check for backup on first load
     LaunchedEffect(Unit) {
-        journalViewModel.checkForBackup()
+        signInViewModel.checkForBackup()
     }
 
     // Animated background
@@ -283,8 +285,8 @@ fun ProfileScreen(
                     
                     Spacer(modifier = Modifier.height(16.dp))
                     
-                    when (backupStatus) {
-                        is BackupStatus.Loading -> {
+                    when (backupState) {
+                        is BackupState.Loading -> {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -301,7 +303,7 @@ fun ProfileScreen(
                                 )
                             }
                         }
-                        is BackupStatus.Success -> {
+                        is BackupState.Success -> {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -313,13 +315,13 @@ fun ProfileScreen(
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
-                                    text = (backupStatus as BackupStatus.Success).message,
+                                    text = (backupState as BackupState.Success).message,
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = SuccessColor
                                 )
                             }
                         }
-                        is BackupStatus.Error -> {
+                        is BackupState.Error -> {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -331,13 +333,13 @@ fun ProfileScreen(
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
-                                    text = (backupStatus as BackupStatus.Error).message,
+                                    text = (backupState as BackupState.Error).message,
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = ErrorColor
                                 )
                             }
                         }
-                        is BackupStatus.BackupAvailable -> {
+                        is BackupState.BackupAvailable -> {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -352,7 +354,7 @@ fun ProfileScreen(
                                     text = "Backup available from ${
                                         SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(
                                             Date(
-                                                (backupStatus as BackupStatus.BackupAvailable).lastBackupTime)
+                                                (backupState as BackupState.BackupAvailable).lastBackupTime)
                                         )}",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = InfoColor
@@ -375,7 +377,7 @@ fun ProfileScreen(
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Button(
-                            onClick = { journalViewModel.backupData() },
+                            onClick = { signInViewModel.backupData() },
                             modifier = Modifier.weight(1f).background(
                                 brush = PrimaryGradient,
                                 shape = RoundedCornerShape(12.dp)
@@ -399,7 +401,7 @@ fun ProfileScreen(
                         }
                         
                         Button(
-                            onClick = { journalViewModel.restoreData() },
+                            onClick = { signInViewModel.restoreData() },
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.surface

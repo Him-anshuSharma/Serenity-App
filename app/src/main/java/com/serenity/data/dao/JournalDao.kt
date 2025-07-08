@@ -1,10 +1,10 @@
-package java.com.serenity.data
+package com.serenity.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.serenity.data.Journal
+import com.serenity.data.local.entities.Journal
 import kotlinx.coroutines.flow.Flow
 
 @Dao

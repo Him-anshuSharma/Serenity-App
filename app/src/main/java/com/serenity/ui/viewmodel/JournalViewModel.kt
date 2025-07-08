@@ -1,13 +1,17 @@
-package com.serenity
+package com.serenity.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import com.serenity.data.ChatSession
-import com.serenity.data.ChatSessionDao
-import com.serenity.data.Journal
+import com.serenity.data.model.AiPerson
+import com.serenity.data.local.entities.ChatSession
+import com.serenity.data.dao.ChatSessionDao
+import com.serenity.data.local.entities.Journal
+import com.serenity.data.model.ChatMessage
+import com.serenity.data.service.BackupService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
-import java.com.serenity.data.JournalDao
+import com.serenity.data.dao.JournalDao
 import javax.inject.Inject
 import himanshu.com.apikeymanager.AiManager
 
@@ -31,7 +35,7 @@ class JournalViewModel @Inject constructor(
     private val journalDao: JournalDao,
     private val chatSessionDao: ChatSessionDao,
     private val backupService: BackupService,
-    @ApplicationContext private val context: android.content.Context // Use ApplicationContext for Hilt
+    @ApplicationContext private val context: Context // Use ApplicationContext for Hilt
 ) : ViewModel() {
     val journals: StateFlow<List<Journal>> =
         journalDao.getAll().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
@@ -134,7 +138,7 @@ class JournalViewModel @Inject constructor(
                     Content: ${journal.content}
                 """.trimIndent()
                 val analysisJson = withContext(Dispatchers.IO) {
-                    aiManager.postRequest(prompt, model = "optional-model")
+                    aiManager.postRequest(prompt).replace("```","").replace("json","")
                 }
                 _analysisResult.value = JournalAnalysisResult.Success(analysisJson)
                 Timber.d("AI analysis result: $analysisJson")
@@ -333,93 +337,6 @@ class JournalViewModel @Inject constructor(
         updatePeopleMentioned()
     }
 
-    // Backup functionality
-    private val _backupStatus = MutableStateFlow<BackupStatus?>(null)
-    val backupStatus: StateFlow<BackupStatus?> = _backupStatus
-
-    fun backupData() {
-        viewModelScope.launch {
-            _backupStatus.value = BackupStatus.Loading
-            try {
-                val journalsList = journals.value
-                val chatSessionsList = chatSessions.first() // Collect the Flow
-                val result = backupService.backupData(journalsList, chatSessionsList)
-                if (result.isSuccess) {
-                    _backupStatus.value =
-                        BackupStatus.Success(result.getOrNull() ?: "Backup completed")
-                } else {
-                    _backupStatus.value =
-                        BackupStatus.Error(result.exceptionOrNull()?.message ?: "Backup failed")
-                }
-            } catch (e: Exception) {
-                _backupStatus.value = BackupStatus.Error(e.message ?: "Backup failed")
-            }
-        }
-    }
-
-    fun restoreData() {
-        viewModelScope.launch {
-            _backupStatus.value = BackupStatus.Loading
-            try {
-                val result = backupService.restoreData()
-                if (result.isSuccess) {
-                    val backupData = result.getOrNull()
-                    backupData?.let { data ->
-                        // Clear existing data
-                        journalDao.deleteAll()
-                        chatSessionDao.deleteAll()
-
-                        // Restore journals
-                        data.journals.forEach { journal ->
-                            journalDao.insertReturnId(journal)
-                        }
-
-                        // Restore chat sessions
-                        data.chatSessions.forEach { session ->
-                            chatSessionDao.insert(session)
-                        }
-
-                        // Update people mentioned after restore
-                        updatePeopleMentioned()
-
-                        _backupStatus.value = BackupStatus.Success("Data restored successfully")
-                    }
-                } else {
-                    _backupStatus.value =
-                        BackupStatus.Error(result.exceptionOrNull()?.message ?: "Restore failed")
-                }
-            } catch (e: Exception) {
-                _backupStatus.value = BackupStatus.Error(e.message ?: "Restore failed")
-            }
-        }
-    }
-
-    fun checkForBackup() {
-        viewModelScope.launch {
-            try {
-                val lastBackupTime = backupService.getLastBackupTime()
-                if (lastBackupTime.isSuccess && lastBackupTime.getOrNull() ?: 0L > 0) {
-                    _backupStatus.value =
-                        BackupStatus.BackupAvailable(lastBackupTime.getOrNull() ?: 0L)
-                }
-            } catch (e: Exception) {
-                // Silently fail - backup check is not critical
-            }
-        }
-    }
-
-    fun clearBackupStatus() {
-        _backupStatus.value = null
-    }
-
-    data class ChatMessage(val text: String?, val isUser: Boolean)
-}
-
-sealed class BackupStatus {
-    object Loading : BackupStatus()
-    data class Success(val message: String) : BackupStatus()
-    data class Error(val message: String) : BackupStatus()
-    data class BackupAvailable(val lastBackupTime: Long) : BackupStatus()
 }
 
 

@@ -1,4 +1,4 @@
-package com.serenity.data
+package com.serenity.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

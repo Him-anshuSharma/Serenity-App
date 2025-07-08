@@ -1,10 +1,6 @@
-package com.serenity
+package com.serenity.ui.screen
 
-import android.app.Activity
 import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.serenity.ui.viewmodel.SignInState
+import com.serenity.ui.viewmodel.SignInViewModel
 import java.com.serenity.ui.theme.*
 
 @Composable

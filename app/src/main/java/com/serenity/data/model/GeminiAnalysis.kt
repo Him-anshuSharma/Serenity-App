@@ -1,4 +1,4 @@
-package com.serenity
+package com.serenity.data.model
 
 
 data class AiAnalysis(

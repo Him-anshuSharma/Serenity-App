@@ -1,4 +1,4 @@
-package com.serenity
+package com.serenity.ui.screen
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -27,18 +27,20 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.serenity.data.ChatSession
+import com.serenity.ui.viewmodel.ChatViewModel
+import com.serenity.data.local.entities.ChatSession
+import com.serenity.data.model.ChatMessage
 import java.com.serenity.ui.theme.*
 
 @Composable
 fun ChatScreen(
-    journalViewModel: JournalViewModel = hiltViewModel(),
+    chatViewModel: ChatViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
-    val chatMessages by journalViewModel.chatMessages.collectAsState()
-    val journals by journalViewModel.journals.collectAsState()
-    val chatSessions by journalViewModel.chatSessions.collectAsState(initial = emptyList())
-    val peopleMentioned by journalViewModel.peopleMentioned.collectAsState()
+    val chatMessages by chatViewModel.chatMessages.collectAsState()
+    val journals by chatViewModel.journals.collectAsState()
+    val chatSessions by chatViewModel.chatSessions.collectAsState(initial = emptyList())
+    val peopleMentioned by chatViewModel.peopleMentioned.collectAsState()
     var input by remember { mutableStateOf(TextFieldValue("")) }
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -50,10 +52,10 @@ fun ChatScreen(
     
     if (showSessionsScreen) {
         ChatSessionsScreen(
-            journalViewModel = journalViewModel,
+            chatViewModel = chatViewModel,
             onBack = { showSessionsScreen = false },
             onSessionSelected = { session: ChatSession ->
-                journalViewModel.loadChatSession(session.id)
+                chatViewModel.loadChatSession(session.id)
                 selectedSessionId = session.id
                 showSessionsScreen = false
             }
@@ -173,13 +175,13 @@ fun ChatScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(
-                    onClick = { journalViewModel.saveCurrentChatSession() },
+                    onClick = { chatViewModel.saveCurrentChatSession() },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 ) {
                     Text("Save Session")
                 }
                 Button(
-                    onClick = { journalViewModel.startNewChatSession() },
+                    onClick = { chatViewModel.startNewChatSession() },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
                 ) {
                     Text("New Session")
@@ -200,7 +202,7 @@ fun ChatScreen(
                     items(chatSessions) { session ->
                         Button(
                             onClick = {
-                                journalViewModel.loadChatSession(session.id)
+                                chatViewModel.loadChatSession(session.id)
                                 selectedSessionId = session.id
                             },
                             colors = if (selectedSessionId == session.id) {
@@ -234,7 +236,7 @@ fun ChatScreen(
                 if (showTyping) {
                     item {
                         ChatBubble(
-                            message = JournalViewModel.ChatMessage("Serenity is typing…", isUser = false),
+                            message = ChatMessage("Serenity is typing…", isUser = false),
                             isUser = false
                         )
                     }
@@ -289,12 +291,12 @@ fun ChatScreen(
                                     text = suggestion,
                                     onClick = {
                                         input = TextFieldValue(suggestion)
-                                        journalViewModel.generateChatBotReply(suggestion) { reply ->
-                                            journalViewModel.addChatMessage(
-                                                JournalViewModel.ChatMessage(suggestion, true)
+                                        chatViewModel.generateChatBotReply(suggestion) { reply ->
+                                            chatViewModel.addChatMessage(
+                                                ChatMessage(suggestion, true)
                                             )
-                                            journalViewModel.addChatMessage(
-                                                JournalViewModel.ChatMessage(reply, false)
+                                            chatViewModel.addChatMessage(
+                                                ChatMessage(reply, false)
                                             )
                                         }
                                         input = TextFieldValue("")
@@ -331,17 +333,17 @@ fun ChatScreen(
                             onClick = {
                                 if (input.text.isNotBlank()) {
                                     val userMessage = input.text
-                                    journalViewModel.addChatMessage(
-                                        JournalViewModel.ChatMessage(userMessage, true)
+                                    chatViewModel.addChatMessage(
+                                        ChatMessage(userMessage, true)
                                     )
                                     input = TextFieldValue("")
                                     focusManager.clearFocus()
                                     keyboardController?.hide()
                                     showTyping = true
-                                    journalViewModel.generateChatBotReply(userMessage) { reply ->
+                                    chatViewModel.generateChatBotReply(userMessage) { reply ->
                                         showTyping = false
-                                        journalViewModel.addChatMessage(
-                                            JournalViewModel.ChatMessage(reply ?: "Sorry, I couldn't process your request.", false)
+                                        chatViewModel.addChatMessage(
+                                            ChatMessage(reply ?: "Sorry, I couldn't process your request.", false)
                                         )
                                     }
                                 }
@@ -373,7 +375,7 @@ fun ChatScreen(
 
 @Composable
 private fun ChatBubble(
-    message: JournalViewModel.ChatMessage,
+    message: ChatMessage,
     isUser: Boolean
 ) {
     Row(

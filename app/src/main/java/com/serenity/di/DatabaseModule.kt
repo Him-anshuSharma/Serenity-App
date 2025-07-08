@@ -7,9 +7,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import com.serenity.data.AppDatabase
-import com.serenity.data.ChatSessionDao
-import java.com.serenity.data.JournalDao
+import com.serenity.data.local.AppDatabase
+import com.serenity.data.dao.ChatSessionDao
+import com.serenity.data.dao.JournalDao
 
 @Module
 @InstallIn(SingletonComponent::class)

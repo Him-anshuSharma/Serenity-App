@@ -1,4 +1,4 @@
-package com.serenity
+package com.serenity.ui.screen
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -68,7 +68,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.gson.Gson
-import com.serenity.data.Journal
+import com.serenity.data.model.AiAnalysis
+import com.serenity.ui.viewmodel.JournalAnalysisResult
+import com.serenity.ui.viewmodel.JournalViewModel
+import com.serenity.ui.viewmodel.SignInViewModel
+import com.serenity.data.local.entities.Journal
+import com.serenity.data.model.ChatMessage
 import java.com.serenity.R
 import java.com.serenity.ui.theme.*
 import java.text.SimpleDateFormat
@@ -119,7 +124,6 @@ fun JournalScreen(
 
     if (showChat) {
         ChatScreen(
-            journalViewModel = journalViewModel,
             onBack = { showChat = false }
         )
         return
@@ -753,7 +757,7 @@ fun ChatBotScreen(journalViewModel: JournalViewModel = hiltViewModel(), onBack: 
                 Spacer(Modifier.width(8.dp))
                 Button(
                     onClick = {
-                        val userMsg = JournalViewModel.ChatMessage(input.text, true)
+                        val userMsg = ChatMessage(input.text, true)
                         journalViewModel.addChatMessage(userMsg)
                         isLoading = true
                         // Compose context for AiAnalysis
@@ -774,7 +778,7 @@ fun ChatBotScreen(journalViewModel: JournalViewModel = hiltViewModel(), onBack: 
                         Bot:
                         """.trimIndent()
                         journalViewModel.generateChatBotReply(prompt) { reply ->
-                            journalViewModel.addChatMessage(JournalViewModel.ChatMessage(reply, false))
+                            journalViewModel.addChatMessage(ChatMessage(reply, false))
                             isLoading = false
                         }
                         input = TextFieldValue("")

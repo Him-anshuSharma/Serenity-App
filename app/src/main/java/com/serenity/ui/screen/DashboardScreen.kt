@@ -1,4 +1,4 @@
-package com.serenity
+package com.serenity.ui.screen
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -32,13 +32,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.serenity.data.Journal
+import com.serenity.data.model.AiAnalysis
+import com.serenity.data.model.AiPerson
+import com.serenity.data.local.entities.Journal
 import java.text.SimpleDateFormat
 import java.util.*
 
 // Import Person from JournalViewModel
 import java.com.serenity.R
-import java.com.serenity.ui.theme.*
 
 
 // Data class for mood data point
