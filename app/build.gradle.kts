@@ -19,6 +19,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Add Google Client ID from local.properties as BuildConfig field
+        val googleClientId: String? = project.findProperty("google.clientId") as String?
+        if (googleClientId != null) {
+            buildConfigField("String", "GOOGLE_CLIENT_ID", "\"$googleClientId\"")
+        }
     }
 
     signingConfigs {

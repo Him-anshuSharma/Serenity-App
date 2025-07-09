@@ -67,7 +67,7 @@ fun MainContent() {
                 SignInScreen(signInViewModel, navController)
             }
             composable("main") {
-                JournalScreen()
+                JournalScreen(navController = navController)
             }
         }
     }

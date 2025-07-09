@@ -24,6 +24,10 @@ import androidx.navigation.compose.rememberNavController
 import com.serenity.ui.viewmodel.SignInState
 import com.serenity.ui.viewmodel.SignInViewModel
 import java.com.serenity.ui.theme.*
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import android.app.Activity
+import android.content.Intent
 
 @Composable
 fun SignInScreen(
@@ -31,6 +35,7 @@ fun SignInScreen(
     navController: NavController = rememberNavController()
 ) {
     val loginState by viewModel.signInState.collectAsState()
+    val fallbackSignInIntent by viewModel.fallbackSignInIntent.collectAsState()
     val context = LocalContext.current
 
     // Animated gradient
@@ -57,6 +62,35 @@ fun SignInScreen(
     )
 
     // Google Sign-In launcher
+
+    // Google Sign-In fallback launcher
+    val googleSignInLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val task = com.google.android.gms.auth.api.signin.GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.result
+                val idToken = account?.idToken
+                if (idToken != null) {
+                    viewModel.signInWithGoogleIdToken(idToken) { success, error ->
+                        // Optionally handle result
+                    }
+                } else {
+                    // Optionally show error
+                }
+            } catch (e: Exception) {
+                // Optionally show error
+            }
+        }
+        viewModel.clearFallbackSignInIntent()
+    }
+
+    // Launch fallback intent if available
+    LaunchedEffect(fallbackSignInIntent) {
+        fallbackSignInIntent?.let {
+            googleSignInLauncher.launch(it)
+        }
+    }
 
     LaunchedEffect(loginState) {
         when (loginState) {

@@ -1,8 +1,19 @@
-*.yaml
+# Ignore sensitive and local config files
+local.properties
+*.keystore
 *key*
+google-services.json
+proguard-rules.pro
+
+# Ignore IDE and build system files
 .idea
 .gradle
-local.properties
-proguard-rules.pro
-*json
 .DS_Store
+
+# Ignore build outputs
+/build/
+app/build/
+
+# Ignore other config
+*.yaml
+*json

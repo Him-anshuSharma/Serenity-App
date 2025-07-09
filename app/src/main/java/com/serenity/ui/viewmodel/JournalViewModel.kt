@@ -137,9 +137,10 @@ class JournalViewModel @Inject constructor(
                     Title: ${journal.title}
                     Content: ${journal.content}
                 """.trimIndent()
-                val analysisJson = withContext(Dispatchers.IO) {
-                    aiManager.postRequest(prompt).replace("```","").replace("json","")
+                val rawResponse = withContext(Dispatchers.IO) {
+                    aiManager.postRequest(prompt)
                 }
+                val analysisJson = extractJsonRobust(rawResponse) ?: rawResponse
                 _analysisResult.value = JournalAnalysisResult.Success(analysisJson)
                 Timber.d("AI analysis result: $analysisJson")
                 // Save analysis to DB
@@ -168,6 +169,28 @@ class JournalViewModel @Inject constructor(
                     JournalAnalysisResult.Error(e.localizedMessage ?: "Unknown error")
             }
         }
+    }
+
+    // Robust JSON extraction utility
+    private fun extractJsonRobust(response: String): String? {
+        // 1. Try to extract between ```json ... ```
+        val jsonBlock = Regex("```json\\s*([\\s\\S]*?)\\s*```", RegexOption.IGNORE_CASE)
+            .find(response)?.groups?.get(1)?.value
+        if (!jsonBlock.isNullOrBlank()) return jsonBlock
+
+        // 2. Try to extract between any triple backticks
+        val anyBlock = Regex("```\\s*([\\s\\S]*?)\\s*```").find(response)?.groups?.get(1)?.value
+        if (!anyBlock.isNullOrBlank()) return anyBlock
+
+        // 3. Try to extract the first JSON object or array
+        val jsonObject = Regex("\\{[\\s\\S]*?\\}").find(response)?.value
+        if (!jsonObject.isNullOrBlank()) return jsonObject
+
+        val jsonArray = Regex("\\[[\\s\\S]*?\\]").find(response)?.value
+        if (!jsonArray.isNullOrBlank()) return jsonArray
+
+        // 4. Nothing found
+        return null
     }
 
     // Function to get all people mentioned across all journals

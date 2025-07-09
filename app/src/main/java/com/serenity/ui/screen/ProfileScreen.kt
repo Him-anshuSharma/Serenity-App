@@ -58,12 +58,14 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import androidx.navigation.NavController
 
 @Composable
 fun ProfileScreen(
     journalViewModel: JournalViewModel = hiltViewModel(),
     signInViewModel: SignInViewModel = hiltViewModel(),
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    navController: NavController
 ) {
     val journals by journalViewModel.journals.collectAsState()
     val backupState by signInViewModel.backupState.collectAsState()
@@ -422,7 +424,12 @@ fun ProfileScreen(
 
             // Logout Button
             Button(
-                onClick = { signInViewModel.signOut() },
+                onClick = {
+                    signInViewModel.signOut()
+                    navController.navigate("signIn") {
+                        popUpTo("main") { inclusive = true }
+                    }
+                },
                 modifier = Modifier
                     .background(
                         brush = Brush.linearGradient(

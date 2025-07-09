@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.com.serenity.data.repository.AuthRepository
 import com.serenity.data.dao.JournalDao
 import com.serenity.data.dao.ChatSessionDao
+import com.serenity.data.repository.AuthRepository
 import com.serenity.data.service.BackupService
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
@@ -37,6 +37,9 @@ class SignInViewModel @Inject constructor(
 
     private val _backupState = MutableStateFlow<BackupState?>(null)
     val backupState: StateFlow<BackupState?> = _backupState.asStateFlow()
+
+    private val _fallbackSignInIntent = MutableStateFlow<android.content.Intent?>(null)
+    val fallbackSignInIntent: StateFlow<android.content.Intent?> = _fallbackSignInIntent.asStateFlow()
 
     init {
         // Listen for auth state changes
@@ -77,10 +80,14 @@ class SignInViewModel @Inject constructor(
                         _signInState.value = SignInState.Error(ex.localizedMessage ?: "Sign-in failed")
                     }
                 } else {
-                    _signInState.value = SignInState.Error("Sign-in cancelled or failed")
+                    // Fallback: emit intent for UI to launch fallback sign-in
+                    _fallbackSignInIntent.value = authRepository.getGoogleSignInIntent(context)
+                    _signInState.value = SignInState.Idle // UI should observe fallbackSignInIntent
                 }
             } catch (e: Exception) {
-                _signInState.value = SignInState.Error(e.localizedMessage ?: "Sign-in error")
+                // Fallback: emit intent for UI to launch fallback sign-in
+                _fallbackSignInIntent.value = authRepository.getGoogleSignInIntent(context)
+                _signInState.value = SignInState.Idle // UI should observe fallbackSignInIntent
             }
         }
     }
@@ -199,6 +206,11 @@ class SignInViewModel @Inject constructor(
                 _backupState.value = BackupState.Error(e.message ?: "Restore failed")
             }
         }
+    }
+
+    // Call this after fallback sign-in is complete to reset the intent
+    fun clearFallbackSignInIntent() {
+        _fallbackSignInIntent.value = null
     }
 }
 

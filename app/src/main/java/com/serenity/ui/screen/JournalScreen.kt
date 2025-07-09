@@ -79,12 +79,14 @@ import java.com.serenity.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.navigation.NavController
 
 
 @Composable
 fun JournalScreen(
     journalViewModel: JournalViewModel = hiltViewModel(),
-    signInViewModel: SignInViewModel = hiltViewModel()
+    signInViewModel: SignInViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val journals by journalViewModel.journals.collectAsState()
     val analysisResult by journalViewModel.analysisResult.collectAsState()
@@ -113,6 +115,15 @@ fun JournalScreen(
         label = "background"
     )
 
+    // Add navigation to sign-in if user is null (after logout)
+    LaunchedEffect(user) {
+        if (user == null) {
+            navController.navigate("signIn") {
+                popUpTo("main") { inclusive = true }
+            }
+        }
+    }
+
     if (showHistory) {
         JournalHistoryScreen(
             journals = journalViewModel.journals.collectAsState().value,
@@ -133,7 +144,8 @@ fun JournalScreen(
         ProfileScreen(
             journalViewModel = journalViewModel,
             signInViewModel = signInViewModel,
-            onBack = { showProfile = false }
+            onBack = { showProfile = false },
+            navController = navController
         )
         return
     }
