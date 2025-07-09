@@ -1,8 +1,7 @@
-# --- Credential Manager (AndroidX Credentials, Google Sign-In) ---
+# --- Credential Manager, Google Sign-In, Firebase, Hilt/DI ---
 -keep class androidx.credentials.** { *; }
 -keep class com.google.android.gms.** { *; }
 -keep class com.google.android.libraries.identity.** { *; }
--keep class androidx.credentials.** { *; }
 -keep class com.google.firebase.** { *; }
 -keep class javax.inject.** { *; }
 -keep class dagger.** { *; }
@@ -10,8 +9,12 @@
 # --- Moshi (Kotlin reflection, codegen, adapters) ---
 -keep class com.squareup.moshi.** { *; }
 -keep @com.squareup.moshi.JsonClass class * { *; }
--keep class kotlin.reflect.** { *; }
+-keepclassmembers class * {
+    @com.squareup.moshi.* <fields>;
+    @com.squareup.moshi.* <methods>;
+}
 -keep class kotlin.Metadata { *; }
+-keep class kotlin.reflect.** { *; }
 -keep class com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory { *; }
 -dontwarn com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 -dontwarn kotlin.reflect.jvm.internal.**
@@ -21,8 +24,11 @@
 -keep class okhttp3.** { *; }
 -dontwarn okhttp3.**
 
-# --- AiManager, ApiKeyManager, and Providers ---
+# --- Your AI Manager, API Key Manager, and Providers ---
 -keep class himanshu.com.apikeymanager.** { *; }
+
+# --- Data classes for Moshi (if in other packages, add them here) ---
+-keep class com.serenity.data.model.** { *; }
 
 # --- General Android rules ---
 -keep class android.support.** { *; }
@@ -30,6 +36,6 @@
 -keep class android.databinding.** { *; }
 -keep class android.** { *; }
 
-# --- Keep annotation attributes ---
+# --- Keep annotation attributes and signatures ---
 -keepattributes *Annotation*
 -keepattributes Signature
