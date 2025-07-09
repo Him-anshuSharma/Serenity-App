@@ -1,9 +1,7 @@
 # Ignore sensitive and local config files
 local.properties
 *.keystore
-*key*
 google-services.json
-proguard-rules.pro
 
 # Ignore IDE and build system files
 .idea
@@ -15,5 +13,6 @@ proguard-rules.pro
 app/build/
 
 # Ignore other config
-*.yaml
-*json
+*.json
+
+app/src/main/assets/key_storage.json
