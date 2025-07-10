@@ -24,8 +24,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 import com.serenity.data.dao.JournalDao
-import javax.inject.Inject
 import himanshu.com.apikeymanager.AiManager
+import javax.inject.Inject
 
 // Data class for people mentioned in journals
 

@@ -1,3 +1,4 @@
+apk_contents
 # Ignore sensitive and local config files
 local.properties
 *.keystore

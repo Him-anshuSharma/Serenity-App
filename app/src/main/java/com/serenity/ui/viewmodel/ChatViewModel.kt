@@ -1,5 +1,6 @@
 package com.serenity.ui.viewmodel
 
+import android.util.Log
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,8 +22,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 import javax.inject.Inject
-import himanshu.com.apikeymanager.AiManager
 import com.serenity.data.dao.JournalDao
+import himanshu.com.apikeymanager.AiManager
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
@@ -61,6 +62,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun generateChatBotReply(prompt: String, onResult: (String) -> Unit) {
+        Log.d("CLUBAPI",prompt)
         viewModelScope.launch {
             try {
                 val contextStr = buildChatContext()
@@ -82,12 +84,15 @@ class ChatViewModel @Inject constructor(
 
                     Respond as a caring friend would. If they seem to want to end the conversation or are just saying goodbye, acknowledge it warmly and let them go. If they're asking for insights, share them gently and conversationally. Keep it natural and supportive.
                 """.trimIndent()
+
+                Log.d("CLUBAPI",enhancedPrompt.toString())
                 val reply = withContext(Dispatchers.IO) {
                     aiManager.postRequest(enhancedPrompt)
                 }
                 onResult(reply)
+                Log.d("CLUBAPI",reply.toString())
             } catch (e: Exception) {
-                Timber.d("Error AI: " + e.message.toString())
+                Log.d("CLUBAPI" , e.message.toString())
                 onResult("Sorry, I couldn't process your request right now.")
             }
         }
