@@ -4,6 +4,13 @@ Serenity is a personal wellness companion app designed to help you track your mo
 
 ---
 
+## 📥 Download
+
+You can download the latest release of Serenity-Android here:
+
+- **GitHub Release:** [Download APK](https://github.com/Him-anshuSharma/Serenity-App/releases/download/v1.0/app-release.apk)
+---
+
 ## 🌟 Features
 
 ### 1. Effortless Journaling
