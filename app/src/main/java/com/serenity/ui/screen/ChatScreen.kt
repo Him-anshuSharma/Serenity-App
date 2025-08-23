@@ -114,7 +114,9 @@ fun ChatScreen(
                         elevation = 8.dp,
                         shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 20.dp),
                         spotColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f)
-                    ),
+                    )
+                    .imePadding()
+                ,
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
