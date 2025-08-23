@@ -11,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -348,26 +349,29 @@ fun JournalScreen(
                                 }
                             },
                             enabled = title.isNotBlank() && content.isNotBlank() && !isAnalyzing,
-                            modifier = Modifier.weight(1f).background(
-                                brush = if (isAnalyzing) {
-                                    Brush.linearGradient(
-                                        colors = listOf(
-                                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
-                                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
-                                        )
-                                    )
-                                } else {
-                                    PrimaryGradient
-                                },
-                                shape = RoundedCornerShape(12.dp)
-                            ),
+                            modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Transparent
                             ),
-                            shape = RoundedCornerShape(12.dp)
+                            contentPadding = PaddingValues()
                         ) {
                             Box(
-                                modifier = Modifier,
+                                modifier = Modifier
+                                    .background(
+                                        brush = if (isAnalyzing) {
+                                            Brush.linearGradient(
+                                                colors = listOf(
+                                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
+                                                )
+                                            )
+                                        } else {
+                                            PrimaryGradient
+                                        },
+                                        shape = RoundedCornerShape(12.dp)
+                                    )
+                                    .fillMaxWidth()
+                                    .padding(vertical = 12.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 if (isAnalyzing) {
@@ -386,7 +390,7 @@ fun JournalScreen(
                                 }
                             }
                         }
-                        
+
                         Button(
                             onClick = {
                                 if (title.isNotBlank() && content.isNotBlank()) {
