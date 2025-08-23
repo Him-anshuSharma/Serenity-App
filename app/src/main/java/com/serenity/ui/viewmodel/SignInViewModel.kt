@@ -212,6 +212,11 @@ class SignInViewModel @Inject constructor(
     fun clearFallbackSignInIntent() {
         _fallbackSignInIntent.value = null
     }
+
+    fun setError(message: String) {
+        _signInState.value = SignInState.Error(message)
+    }
+
 }
 
 sealed class SignInState {

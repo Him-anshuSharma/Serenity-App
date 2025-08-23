@@ -28,6 +28,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import android.app.Activity
 import android.content.Intent
+import timber.log.Timber
 
 @Composable
 fun SignInScreen(
@@ -37,6 +38,78 @@ fun SignInScreen(
     val loginState by viewModel.signInState.collectAsState()
     val fallbackSignInIntent by viewModel.fallbackSignInIntent.collectAsState()
     val context = LocalContext.current
+
+    // ✅ Log current state for debugging
+    LaunchedEffect(loginState) {
+        Timber.tag("SignInScreen").d("Current loginState = $loginState")
+    }
+    LaunchedEffect(fallbackSignInIntent) {
+        Timber.tag("SignInScreen").d("Fallback intent = $fallbackSignInIntent")
+    }
+
+    // Google Sign-In fallback launcher
+    val googleSignInLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            Log.d("SignInScreen", "Launcher resultCode=${result.resultCode}, data=${result.data}")
+
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                val task =
+                    com.google.android.gms.auth.api.signin.GoogleSignIn.getSignedInAccountFromIntent(data)
+                try {
+                    val account = task.result
+                    Log.d("SignInScreen", "Google account = $account")
+                    val idToken = account?.idToken
+                    Log.d("SignInScreen", "Extracted idToken=$idToken")
+
+                    if (idToken != null) {
+                        viewModel.signInWithGoogleIdToken(idToken) { success, error ->
+                            Log.d("SignInScreen", "signInWithGoogleIdToken -> success=$success, error=$error")
+                        }
+                    } else {
+                        Log.e("SignInScreen", "GoogleSignIn returned null idToken")
+                        viewModel.setError("GoogleSignIn failed: Missing idToken")
+                    }
+                } catch (e: Exception) {
+                    Log.e("SignInScreen", "GoogleSignIn Exception", e)
+                    viewModel.setError("Exception during GoogleSignIn: ${e.localizedMessage}")
+                }
+            } else {
+                Log.e("SignInScreen", "GoogleSignIn cancelled or failed, code=${result.resultCode}")
+                viewModel.setError("GoogleSignIn cancelled or failed")
+            }
+
+            viewModel.clearFallbackSignInIntent()
+        }
+
+    // Auto-launch fallback intent if available
+    LaunchedEffect(fallbackSignInIntent) {
+        fallbackSignInIntent?.let {
+            Log.d("SignInScreen", "Launching fallback intent")
+            googleSignInLauncher.launch(it)
+        }
+    }
+
+    LaunchedEffect(loginState) {
+        when (loginState) {
+            is SignInState.Success -> {
+                Log.d("SignInScreen", "Login success -> navigating to main")
+                navController.navigate("main") {
+                    popUpTo("signIn") { inclusive = true }
+                }
+            }
+
+            is SignInState.Error -> {
+                Log.e("SignInScreen", "Login error: ${(loginState as SignInState.Error).message}")
+            }
+
+            is SignInState.Loading -> {
+                Log.d("SignInScreen", "Login loading...")
+            }
+
+            else -> Log.d("SignInScreen", "Login idle")
+        }
+    }
 
     // Animated gradient
     val infiniteTransition = rememberInfiniteTransition(label = "gradient")
@@ -60,30 +133,6 @@ fun SignInScreen(
         ),
         label = "floating"
     )
-
-    // Google Sign-In launcher
-
-    // Google Sign-In fallback launcher
-    val googleSignInLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            val task = com.google.android.gms.auth.api.signin.GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.result
-                val idToken = account?.idToken
-                if (idToken != null) {
-                    viewModel.signInWithGoogleIdToken(idToken) { success, error ->
-                        // Optionally handle result
-                    }
-                } else {
-                    // Optionally show error
-                }
-            } catch (e: Exception) {
-                // Optionally show error
-            }
-        }
-        viewModel.clearFallbackSignInIntent()
-    }
 
     // Launch fallback intent if available
     LaunchedEffect(fallbackSignInIntent) {
@@ -323,6 +372,7 @@ fun SignInScreen(
         }
     }
 }
+
 
 @Composable
 private fun FeatureChip(

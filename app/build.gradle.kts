@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,11 @@ plugins {
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.hilt.android)
     id("org.jetbrains.kotlin.kapt")
+}
+val props = Properties()
+val keystoreFile = rootProject.file("local.properties")
+if (keystoreFile.exists()) {
+    keystoreFile.inputStream().use { props.load(it) }
 }
 
 android {
@@ -19,22 +26,23 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField(
+            "String",
+            "GOOGLE_CLIENT_ID",
+            "\"${props["GOOGLE_CLIENT_ID"]}\""
+        )
 
-        // Add Google Client ID from local.properties as BuildConfig field
-        val googleClientId: String? = project.findProperty("google.clientId") as String?
-        if (googleClientId != null) {
-            buildConfigField("String", "GOOGLE_CLIENT_ID", "\"$googleClientId\"")
-        }
     }
 
     signingConfigs {
         create("release") {
-            storeFile = file("serenity-release-key.keystore")
-            storePassword = "himanshu@12"
-            keyAlias = "serenity-key-alias"
-            keyPassword = "himanshu@12"
+            storeFile = file(props["RELEASE_STORE_FILE"] ?: "missing.keystore")
+            storePassword = props["RELEASE_STORE_PASSWORD"] as String?
+            keyAlias = props["RELEASE_KEY_ALIAS"] as String?
+            keyPassword = props["RELEASE_KEY_PASSWORD"] as String?
         }
     }
+
 
     buildTypes {
         release {
