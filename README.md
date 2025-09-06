@@ -55,19 +55,3 @@ Contributions are welcome! Please open issues or pull requests for suggestions a
 
 [MIT](LICENSE)
 
-## Secrets & Release Preparation
-
-- **local.properties**: This file contains sensitive data (e.g., Google client ID) and must NOT be committed. Use the provided template and add your own secrets locally.
-- **Keystore files**: Never commit your release keystore or passwords. Use local signing configs only.
-- **google-services.json**: If present, do not commit real credentials. Use a placeholder for open source or share securely with collaborators.
-- **ProGuard**: Rules are included, but do not add secrets to proguard-rules.pro.
-
-### Setting up for Development
-1. Copy `local.properties.example` (or the template in this repo) to `local.properties`.
-2. Add your real Google client ID and SDK path.
-3. Never commit your `local.properties` or keystore files.
-
-### Preparing for Release
-- Double-check that no secrets are hardcoded in the codebase.
-- Ensure all sensitive files are in `.gitignore`.
-- Build with ProGuard enabled for release.
