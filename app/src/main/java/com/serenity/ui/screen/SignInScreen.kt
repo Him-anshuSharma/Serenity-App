@@ -29,6 +29,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import android.app.Activity
 import android.content.Intent
 import timber.log.Timber
+import kotlin.math.log
 
 @Composable
 fun SignInScreen(
@@ -39,18 +40,10 @@ fun SignInScreen(
     val fallbackSignInIntent by viewModel.fallbackSignInIntent.collectAsState()
     val context = LocalContext.current
 
-    // ✅ Log current state for debugging
-    LaunchedEffect(loginState) {
-        Timber.tag("SignInScreen").d("Current loginState = $loginState")
-    }
-    LaunchedEffect(fallbackSignInIntent) {
-        Timber.tag("SignInScreen").d("Fallback intent = $fallbackSignInIntent")
-    }
 
     // Google Sign-In fallback launcher
     val googleSignInLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            Log.d("SignInScreen", "Launcher resultCode=${result.resultCode}, data=${result.data}")
 
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
@@ -58,24 +51,24 @@ fun SignInScreen(
                     com.google.android.gms.auth.api.signin.GoogleSignIn.getSignedInAccountFromIntent(data)
                 try {
                     val account = task.result
-                    Log.d("SignInScreen", "Google account = $account")
+
                     val idToken = account?.idToken
-                    Log.d("SignInScreen", "Extracted idToken=$idToken")
+
 
                     if (idToken != null) {
                         viewModel.signInWithGoogleIdToken(idToken) { success, error ->
-                            Log.d("SignInScreen", "signInWithGoogleIdToken -> success=$success, error=$error")
+
                         }
                     } else {
-                        Log.e("SignInScreen", "GoogleSignIn returned null idToken")
+
                         viewModel.setError("GoogleSignIn failed: Missing idToken")
                     }
                 } catch (e: Exception) {
-                    Log.e("SignInScreen", "GoogleSignIn Exception", e)
+
                     viewModel.setError("Exception during GoogleSignIn: ${e.localizedMessage}")
                 }
             } else {
-                Log.e("SignInScreen", "GoogleSignIn cancelled or failed, code=${result.resultCode}")
+
                 viewModel.setError("GoogleSignIn cancelled or failed")
             }
 
@@ -85,29 +78,8 @@ fun SignInScreen(
     // Auto-launch fallback intent if available
     LaunchedEffect(fallbackSignInIntent) {
         fallbackSignInIntent?.let {
-            Log.d("SignInScreen", "Launching fallback intent")
+
             googleSignInLauncher.launch(it)
-        }
-    }
-
-    LaunchedEffect(loginState) {
-        when (loginState) {
-            is SignInState.Success -> {
-                Log.d("SignInScreen", "Login success -> navigating to main")
-                navController.navigate("main") {
-                    popUpTo("signIn") { inclusive = true }
-                }
-            }
-
-            is SignInState.Error -> {
-                Log.e("SignInScreen", "Login error: ${(loginState as SignInState.Error).message}")
-            }
-
-            is SignInState.Loading -> {
-                Log.d("SignInScreen", "Login loading...")
-            }
-
-            else -> Log.d("SignInScreen", "Login idle")
         }
     }
 
@@ -142,16 +114,13 @@ fun SignInScreen(
     }
 
     LaunchedEffect(loginState) {
-        when (loginState) {
-            is SignInState.Success -> {
-                navController.navigate("main") {
-                    popUpTo("signIn") { inclusive = true }
-                }
+        if(loginState is SignInState.Success){
+            navController.navigate("main") {
+                popUpTo("signIn") { inclusive = true }
             }
-            is SignInState.Error -> {
-                Log.e("SignInScreen", (loginState as SignInState.Error).message)
-            }
-            else -> {}
+        }
+        else if(loginState is SignInState.Error){
+            Timber.tag("SignInScreen").e((loginState as SignInState.Error).message)
         }
     }
 
@@ -172,7 +141,10 @@ fun SignInScreen(
         Box(
             modifier = Modifier
                 .size(200.dp)
-                .offset(x = (-50 + animatedProgress * 100).dp, y = (-100 + animatedProgress * 50).dp)
+                .offset(
+                    x = (-50 + animatedProgress * 100).dp,
+                    y = (-100 + animatedProgress * 50).dp
+                )
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(

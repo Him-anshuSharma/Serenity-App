@@ -11,13 +11,11 @@ import com.serenity.data.local.entities.ChatSession
 import com.serenity.data.dao.ChatSessionDao
 import com.serenity.data.local.entities.Journal
 import com.serenity.data.model.ChatMessage
-import com.serenity.data.service.BackupService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,7 +32,6 @@ import javax.inject.Inject
 class JournalViewModel @Inject constructor(
     private val journalDao: JournalDao,
     private val chatSessionDao: ChatSessionDao,
-    private val backupService: BackupService,
     @ApplicationContext private val context: Context // Use ApplicationContext for Hilt
 ) : ViewModel() {
     val journals: StateFlow<List<Journal>> =

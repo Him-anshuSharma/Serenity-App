@@ -140,7 +140,7 @@ class SignInViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val lastBackupTime = backupService.getLastBackupTime()
-                if (lastBackupTime.isSuccess && lastBackupTime.getOrNull() ?: 0L > 0) {
+                if (lastBackupTime.isSuccess && (lastBackupTime.getOrNull() ?: 0L) > 0) {
                     _backupState.value = BackupState.BackupAvailable(lastBackupTime.getOrNull() ?: 0L)
                 }
             } catch (e: Exception) {
